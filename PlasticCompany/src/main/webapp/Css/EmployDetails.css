@@ -1,0 +1,57 @@
+#empfrom {
+	max-width: 360px;
+	margin: 50px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+	color: #E65715;
+	text-align: center;
+}
+
+label, input, select, textarea {
+	display: block;
+	margin-bottom: 10px;
+}
+
+input[type="text"], input[type="password"], select, textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+input[type="file"] {
+	width: 100%;
+	margin-top: 5px;
+}
+
+.message {
+	color: red;
+	margin-top: 0.5rem;
+}
+.ui-input-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f2f2f2;
+	margin: 0;
+	padding: 0;
+}

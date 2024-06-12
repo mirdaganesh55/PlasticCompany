@@ -1,0 +1,15 @@
+drop database if exists CompanyDetails;
+create database CompanyDetails;
+use CompanyDetails;
+drop table if exists Employ;
+   CREATE TABLE Employ (
+    empId INT PRIMARY KEY AUTO_INCREMENT,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    gender varchar(6),
+    dateOfBirth DATE,
+    address VARCHAR(255),
+    phoneNumber VARCHAR(15),
+    email VARCHAR(100),
+    imgUrl varchar(100)
+);

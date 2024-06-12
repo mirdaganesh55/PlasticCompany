@@ -1,0 +1,23 @@
+.container {
+	    background-color: rgba(0, 0, 0, 0.6);
+    padding: 36px;
+    border-radius: 17px;
+    text-align: center;
+}
+
+.input-group {
+	margin-bottom: 20px;
+}
+
+.input-group input {
+	width: 80%;
+	padding: 9px;
+	border-radius: 11px;
+	border: none;
+	background-color: #f8f8f8
+}
+
+.message {
+	color: red;
+	margin-top: 0.5rem;
+}
