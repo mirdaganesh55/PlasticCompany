@@ -82,4 +82,29 @@ public class Employ {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+	@Override
+	public String toString() {
+		return "Employ [empId=" + empId + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
+				+ ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", phoneNumber=" + phoneNumber + ", email="
+				+ email + ", file=" + file + ", imgUrl=" + imgUrl + ", employmentStatus=" + employmentStatus + "]";
+	}
+	public Employ(String empId, String firstName, String lastName, String gender, Date dateOfBirth, String address,
+			String phoneNumber, String email, Part file, String imgUrl, String employmentStatus) {
+		super();
+		this.empId = empId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.file = file;
+		this.imgUrl = imgUrl;
+		this.employmentStatus = employmentStatus;
+	}
+	public Employ() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 }

@@ -1,0 +1,63 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sidebar {
+    flex: 0 0 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.profile, .tasks, .notifications, .events {
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.profile-image {
+    text-align: center;
+}
+
+.profile-image img {
+    max-width: 200px;
+    border-radius: 50%;
+}
+
+.tasks ul, .notifications ul, .events ul {
+    list-style: none;
+    padding: 0;
+}
+
+.tasks ul li, .notifications ul li, .events ul li {
+    margin-bottom: 10px;
+}

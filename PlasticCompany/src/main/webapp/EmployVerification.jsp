@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OTP Verification Form</title>
+<title>OTP Verification</title>
 
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 	rel="stylesheet" />
@@ -50,7 +50,7 @@ body {
 				</div>
 				<div class="message">
 					<h:message for="digit1" style="color: red; font: 12px" />
-				</div>
+				</div> 
 				<h:commandButton styleClass="btn1"
 					action="#{employeDao.validateResetOtp()}" value="Verify OTP" />
 			</h:form>

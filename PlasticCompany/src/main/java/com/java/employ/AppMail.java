@@ -55,7 +55,7 @@ public class AppMail {
 				"<body>" +
 				"<div class='container'>" +
 				"<h1>Welcome to Our Company!</h1>" +
-				"<p>Dear <span style='color: #3196CF;'>" + employ.getFirstName() + " " + employ.getLastName() + "</span>,</p>" +
+				"<p>Dear <span style='color: #3196CF;'>" + employ.getFirstName() + " " + employ.getLastName() + "</span></p>" +
 				"<p>An OTP has been sent to your registered email address for completing the verification process of your employee registration. Please do not share this OTP with anyone.</p>" +
 				"<p>Your OTP is : " + empLogin.getOtp() + "</p>"+
 				"<p>Once you receive the OTP, kindly complete the verification process to finalize your registration as an employee.</p>" +
@@ -68,6 +68,57 @@ public class AppMail {
 				"</html>";
 		sendEmail(subject, to, from, imagePath, body);
 	}
+	
+	public static void sendSuccessEmail(Employ employ,EmpLogin empLogin,String to) {
+        System.out.println("Preparing to send success email ...");
+        String subject = "Employee Registration Successful";
+        String from = "professional.ganesh237@gmail.com";
+		String imagePath = "C:\\Users\\ganeshmi\\Downloads\\sucessResgistartion.jpg"; // Replace with the actual path to your image file
+        String body = "<html>" +
+                "<head>" +
+                "<style>" +
+                "body {" +
+                "font-family: 'Helvetica', 'Arial', sans-serif;" +
+                "line-height: 1.6;" +
+                "margin: 0;" +
+                "padding: 0;" +
+                "background-color: #f9f9f9;" +
+                "}" +
+                ".container {" +
+                "max-width: 600px;" +
+                "margin: 20px auto;" +
+                "padding: 30px;" +
+                "background-color: #ffffff;" +
+                "box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);" +
+                "border-radius: 10px;" +
+                "}" +
+                "h1 {" +
+                "color: #333333;" +
+                "font-size: 24px;" +
+                "}" +
+                "p {" +
+                "color: #555555;" +
+                "font-size: 16px;" +
+                "margin-bottom: 20px;" +
+                "}" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<div class='container'>" +
+                "<h1 style=\"color: #2DAA04;\">Congratulations!</h1>" +
+                "<p>Dear " +employ.getFirstName()+" "+employ.getLastName()+ "</p>" +
+                "<p>Your registration process has been successfully completed. You are now an official member of our team.</p>" +
+                "<p>Thank you for joining us. We look forward to working with you and wish you all the best!</p>" +
+                "<p>Your Employee ID is: <span style='color: #060B70  ;'> " + employ.getEmpId() + "</span></p>" +
+                "<p>Your Username is: <span style='color: #060B70  ;'> " + empLogin.getUsername()+ "</span></p>" +
+                "<p>Best regards,</p>" +
+                "<p style=\"color: #09EAC8;\"> GANESH MIRDA </p>" +
+                "</div>" +
+                "</body>" +
+                "</html>";
+        sendEmail(subject, to, from, imagePath, body); // No need for image in success email
+    }
+
 
 	private static void sendEmail(String subject, String to, String from, String imagePath, String body) {
 

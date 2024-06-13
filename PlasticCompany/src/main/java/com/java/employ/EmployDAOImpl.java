@@ -23,6 +23,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class EmployDAOImpl implements EmployDAO {
 
+	
 	private String filePath;
 	private String enteredOtp;
 	private String enteredOtp1;
@@ -82,6 +83,25 @@ public class EmployDAOImpl implements EmployDAO {
 		cr.add(Restrictions.eq("username", username));
 		EmpLogin empFound = (EmpLogin) cr.uniqueResult();
 		return empFound;
+	}
+	
+	public String searchEmployDetails(String loginId) {
+		Map<String, Object> sessionMap = 
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		SessionFactory sf = SessionHelper.getConnection();
+		Session session = sf.openSession();
+		Criteria criteria = session.createCriteria(Employ.class);
+		criteria.add(Restrictions.eq("empId", loginId));
+		Employ providerData = (Employ) criteria.uniqueResult();
+		session.close();
+		sf.close();
+		sessionMap.put("EmployList", providerData);
+		if (providerData != null) {
+			sessionMap.put("empId", providerData.getEmpId());
+			System.out.println("==================" + providerData);
+			return "EmployDashboard.jsp?faces-redirect=true";
+		}
+		return "";
 	}
 	
 	public static String generateEmployID() {
@@ -246,7 +266,7 @@ public class EmployDAOImpl implements EmployDAO {
 		EmpLogin EmpLogDataDb = searchadmin(login.getUsername());
 		sessionMap.put("EmpDbData", EmpLogDataDb);
 		EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
-
+		
 		System.out.println("Employ data by search meth():  "+EmpLogDataDb);
 		if (EmpLogDataDb.getUsername() != null) {
 			// Retrieve PID from the patient object
@@ -263,16 +283,23 @@ public class EmployDAOImpl implements EmployDAO {
 				Employ logDetails1 = (Employ) sessionMap.get("EmployData");
 				AppMail.sendEmail(logDetails1,logDetails12);
 				return "EmployVerification.jsp?faces-redirect=true";
+			}else {
+				return searchEmployDetails(EmpLogDataDb.getLoginId());
+//				return "ShowEmpProfile.jsp?faces-redirect=true";
 			}
 		}
-		return "sucess.jsp?faces-redirect=true";
+		return "";
 	}	
+	
+
+	
 	public String validateResetOtp() {
 	    String enteredOtp = enteredOtp1 + enteredOtp2 + enteredOtp3 + enteredOtp4;
 	    SessionFactory sf = SessionHelper.getConnection();
 	    Session session = sf.openSession();
 	    Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 	    EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
+		Employ logDetails1 = (Employ) sessionMap.get("EmployData");
 
 	    System.out.println("login Details came from empLogin meth():" + logDetails12);
 	    String otpFromDb = getLatestOtpForUser(session);
@@ -288,7 +315,8 @@ public class EmployDAOImpl implements EmployDAO {
 	        System.out.println("After save " + employlog);
 	        trans2.commit();
 	        System.out.println("Successfully checked...");
-	        return "sucess.jsp?faces-redirect=true";
+	        AppMail.sendSuccessEmail(logDetails1,logDetails12,logDetails1.getEmail());
+	        return "ShowEmpProfile.jsp?faces-redirect=true";
 	    } else {
 	        System.out.println("Incorrect Otp Try again");
 	        FacesContext.getCurrentInstance().addMessage("form:digit1",
@@ -296,5 +324,4 @@ public class EmployDAOImpl implements EmployDAO {
 	        return "invalid otp";
 	    }
 	}
-
 }	
