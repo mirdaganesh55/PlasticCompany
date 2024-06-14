@@ -3,7 +3,7 @@ create database CompanyDetails;
 use CompanyDetails;
 drop table if exists Employ;
    CREATE TABLE Employ (
-    empId INT PRIMARY KEY AUTO_INCREMENT,
+    empId varchar(20) Primary key,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     gender varchar(6),
@@ -11,5 +11,25 @@ drop table if exists Employ;
     address VARCHAR(255),
     phoneNumber VARCHAR(15),
     email VARCHAR(100),
-    imgUrl varchar(100)
+    imgUrl varchar(100),
+	employmentStatus VARCHAR(20),
+    otp varchar(50)
 );
+drop table if exists empLogin;
+create table empLogin(
+	loginId varchar(20) primary key,
+	username varchar(100),
+    password varchar(100),
+	lastLoginTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    foreign key (loginId) references Employ(empId)
+);
+
+select * from employ;
+select * from empLogin;
+alter table empLogin add column Otp varchar(50) ;
+alter table employ drop column password ;
+alter table employ drop column Otp ;
+delete from empLogin where username='asdf1234';
+
+
+SELECT MAX(e.empId) FROM Employ e;
