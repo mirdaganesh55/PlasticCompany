@@ -1,63 +1,101 @@
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
+	max-width: 78rem;
+	margin: 0px auto;
+	justify-content: space-between;
 }
-
 .sidebar {
-    flex: 0 0 200px;
-    background-color: #f4f4f4;
-    padding: 20px;
+	flex: 0 0 155px;
+	padding: 12px;
 }
-
 .sidebar h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
+	margin-top: 0;
+	margin-bottom: 20px;
 }
-
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+	list-style: square;
+	padding: -1px;
 }
-
 .sidebar ul li {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
-
 .main-content {
-    flex: 1;
     padding: 20px;
+    margin-left: 14rem;
+    margin-right: 10rem;
 }
-
 h1 {
-    margin-top: 0;
+	margin-top: 0;
 }
-
 .profile, .tasks, .notifications, .events {
-    margin-bottom: 30px;
+	margin-bottom: 30px;
 }
-
 .profile-info {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
+	background-color: #f9f9f9;
+	padding: 20px;
+	border-radius: 10px;
 }
-
 .profile-image {
-    text-align: center;
+	text-align: center;
+	margin-bottom: 20px;
+	margin-top: -5rem;
 }
-
 .profile-image img {
-    max-width: 200px;
-    border-radius: 50%;
+	max-width: 6rem;
+	border-radius: 13%;
+	border: double;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
-
 .tasks ul, .notifications ul, .events ul {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
 .tasks ul li, .notifications ul li, .events ul li {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+/* Styling for the links in the sidebar */
+.sidebar ul li a {
+	text-decoration: none;
+	color: #333;
+}
+
+.sidebar ul li a:hover {
+	color: #555;
+}
+/* Hide the menu list by default */
+#menuList {
+	display: none;
+}
+
+/* Style the button */
+#menuButton {
+	background-color: #f4f4f4;
+	border: none;
+	padding: 10px 20px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+/* Style the menu items */
+#menuList li {
+	margin-bottom: 10px;
+}
+
+#menuList li a {
+	text-decoration: none;
+	color: #333;
+}
+
+#menuList li a:hover {
+	color: #555;
+}
+/* Style the hamburger menu icon */
+#menuHeader {
+	cursor: pointer;
+}
+
+/* Add spacing between the icon and the text */
+#menuHeader::before {
+	content: "☰ ";
 }

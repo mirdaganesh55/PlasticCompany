@@ -22,11 +22,9 @@ body {
 	font-family: Arial, sans-serif;
 	color: #fff; /* Text color */
 }
-
 .container {
 	text-align: center;
 }
-
 .input-group {
 	margin-bottom: 20px;
 }
@@ -47,7 +45,6 @@ body {
 				<h:inputSecret id="password" value="#{emplogin.password}" />
 				<span class="message"><h:message for="password" /></span>
 			</div>
-
 			<h:commandButton action="#{employeController.empLogin(emplogin)}"
 				value="Login" />
 		</h:form>

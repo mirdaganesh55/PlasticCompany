@@ -14,8 +14,8 @@
 	<form enctype="multipart/form-data">
 		<div class="container">
 			<aside class="sidebar">
-				<h2>Menu</h2>
-				<ul>
+				<h2 id="menuHeader">Menu</h2>
+				<ul id="menuLinks" style="display: none;">
 					<li><a href="#">Dashboard</a></li>
 					<li><a href="#">Profile</a></li>
 					<li><a href="#">Tasks</a></li>
@@ -23,6 +23,8 @@
 					<!-- Add more menu items as needed -->
 				</ul>
 			</aside>
+		</div>
+
 			<main class="main-content">
 
 				<div>
@@ -34,34 +36,33 @@
 					</h:panelGroup>
 					<div class="profile-image" style="float: right;">
 						<h3>Profile Picture</h3>
-						<h:graphicImage value="#{EmployList.imgUrl}"/>
-						<h:graphicImage value="/images/Passport_Photo.jpeg" />
+						<h:graphicImage value="#{EmployList.imgUrl}" />
+						<div style="clear: both;"></div>
+						<h2>Employee Details</h2>
+						<div class="profile-info"
+							style="float: left; background-image: url('Css/images/verify.jpg');">
+							<p>
+								<strong>Name:</strong>
+								<h:outputText
+									value="#{EmployList.firstName} #{EmployList.lastName}" />
+							</p>
+							<p>
+								<strong>Email:</strong>
+								<h:outputText value="#{EmployList.email}" />
+							</p>
+							<p>
+								<strong>Phone:</strong>
+								<h:outputText value="#{EmployList.phoneNumber}" />
+							</p>
+							<!-- Add more details as needed -->
+						</div>
 					</div>
-					<div style="clear: both;"></div>
+
 				</div>
 				<br />
 
-				<div class="profile">
-					<h2>Employee Profile</h2>
-					<div class="profile-info">
-						<p>
-							<strong>Name:</strong>
-							<h:outputText
-								value="#{EmployList.firstName} #{EmployList.lastName}" />
-							<%-- 						<h:outputText value="#{EmployList.lastName}" /> --%>
-						</p>
-						<p>
-							<strong>Email:</strong>
-							<h:outputText value="#{EmployList.email}" />
-						</p>
-						<p>
-							<strong>Phone:</strong>
-							<h:outputText value="#{EmployList.phoneNumber}" />
-						</p>
-						<!-- Add more details as needed -->
-					</div>
+				<div class="profile"></div>
 
-				</div>
 				<div class="tasks">
 					<h2>Tasks</h2>
 					<ul>
@@ -79,6 +80,7 @@
 						<!-- Add dynamic notifications here using JSF tags -->
 					</ul>
 				</div>
+
 				<div class="events">
 					<h2>Upcoming Events</h2>
 					<ul>
@@ -88,8 +90,9 @@
 					</ul>
 				</div>
 			</main>
-		</div>
+
 	</form>
+	<script src="JavaScript\DashBoard.js"></script>
 </body>
 	</html>
 </f:view>

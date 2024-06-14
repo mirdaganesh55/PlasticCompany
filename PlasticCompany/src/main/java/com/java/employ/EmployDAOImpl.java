@@ -25,11 +25,21 @@ public class EmployDAOImpl implements EmployDAO {
 
 	
 	private String filePath;
+	private String filePathNew;
 	private String enteredOtp;
 	private String enteredOtp1;
 	private String enteredOtp2;
 	private String enteredOtp3;
 	private String enteredOtp4;
+	
+	public String getFilePathNew() {
+		return filePathNew;
+	}
+
+	public void setFilePathNew(String filePathNew) {
+		this.filePathNew = filePathNew;
+	}
+
 	public String getEnteredOtp() {
 		return enteredOtp;
 	}
@@ -105,22 +115,29 @@ public class EmployDAOImpl implements EmployDAO {
 	}
 	
 	public static String generateEmployID() {
-		SessionFactory sf = SessionHelper.getConnection();
-		Session session = sf.openSession();
-		Query query = session.createQuery("SELECT MAX(e.empId) FROM Employ e");
-		String lastUHID = (String) query.uniqueResult();
+	    SessionFactory sf = SessionHelper.getConnection();
+	    Session session = sf.openSession();
+	    Query query = session.createQuery("SELECT MAX(e.empId) FROM Employ e");
+//	    Query query = session.createQuery("SELECT MAX(CAST(SUBSTRING(e.empId, 4) AS UNSIGNED)) FROM Employ e\r\n"
+//	    		+ "");
+	    String lastUHID = (String) query.uniqueResult();
 
-		if (lastUHID == null) {
-			lastUHID = "PCE0"; // Set an initial value if the table is empty
-		}
-
-		int numericPart = Integer.parseInt(lastUHID.substring(3)) + 1;
-		String newUHID = String.format("PCE%01d", numericPart);
-		System.out.println(newUHID);
-
-		session.close();
-		return newUHID;
+	    int numericPart;
+	    String newUHID = "";
+	    if (lastUHID == null) {
+	        lastUHID = "PCE0"; // Set an initial value if the table is empty
+	    }else {	
+	    	numericPart = Integer.parseInt(lastUHID.substring(3));
+	    	System.out.println(numericPart);
+	    	
+	    	numericPart++;
+	    	newUHID = String.format("PCE%01d", numericPart);
+	    	System.out.println(newUHID);
+	    }
+	    session.close();
+	    return newUHID;
 	}
+
 
 	@Override
 	public String saveEmpDetailsDao(Employ employ, EmpLogin empLogin) throws IOException {
@@ -128,8 +145,10 @@ public class EmployDAOImpl implements EmployDAO {
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		String empId = generateEmployID();
 		employ.setEmpId(empId);
+		
 		upload(employ.getFile());
-		employ.setImgUrl(filePath);
+		employ.setImgUrl(filePathNew);
+		
 		employ.setEmploymentStatus("Active");
 		String encr = EncryptPassword.getCode(empLogin.getPassword());
 		empLogin.setPassword(encr.trim());
@@ -165,7 +184,9 @@ public class EmployDAOImpl implements EmployDAO {
 		if (file != null) {
 			try (InputStream input = file.getInputStream()) {
 				String fileName = getSubmittedFileName(file);
-				filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
+//				filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
+				filePath = "C:/Users/ganeshmi/git/PlasticCompany/PlasticCompany/src/main/webapp/UploadedImages/" + fileName;
+				filePathNew = "UploadedImages/" +fileName;
 				try (OutputStream output = new FileOutputStream(new File(filePath))) {
 					int bytesRead;
 					final byte[] CHUNK = new byte[1024];
@@ -174,6 +195,7 @@ public class EmployDAOImpl implements EmployDAO {
 					}
 				}
 				System.out.println("Upload done in "+filePath);
+				System.out.println("Upload done in New file "+filePathNew);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -281,7 +303,7 @@ public class EmployDAOImpl implements EmployDAO {
 				System.out.println("Hitted ");
 				System.out.println("EmpLog Deatils from Session Map logDetails12 :"+logDetails12);
 				Employ logDetails1 = (Employ) sessionMap.get("EmployData");
-				AppMail.sendEmail(logDetails1,logDetails12);
+//				AppMail.sendEmail(logDetails1,logDetails12);
 				return "EmployVerification.jsp?faces-redirect=true";
 			}else {
 				return searchEmployDetails(EmpLogDataDb.getLoginId());
@@ -315,7 +337,7 @@ public class EmployDAOImpl implements EmployDAO {
 	        System.out.println("After save " + employlog);
 	        trans2.commit();
 	        System.out.println("Successfully checked...");
-	        AppMail.sendSuccessEmail(logDetails1,logDetails12,logDetails1.getEmail());
+//	        AppMail.sendSuccessEmail(logDetails1,logDetails12,logDetails1.getEmail());
 	        return "ShowEmpProfile.jsp?faces-redirect=true";
 	    } else {
 	        System.out.println("Incorrect Otp Try again");
