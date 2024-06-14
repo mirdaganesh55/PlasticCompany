@@ -23,7 +23,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class EmployDAOImpl implements EmployDAO {
 
-	
+
 	private String filePath;
 	private String filePathNew;
 	private String enteredOtp;
@@ -31,7 +31,7 @@ public class EmployDAOImpl implements EmployDAO {
 	private String enteredOtp2;
 	private String enteredOtp3;
 	private String enteredOtp4;
-	
+
 	public String getFilePathNew() {
 		return filePathNew;
 	}
@@ -94,7 +94,7 @@ public class EmployDAOImpl implements EmployDAO {
 		EmpLogin empFound = (EmpLogin) cr.uniqueResult();
 		return empFound;
 	}
-	
+
 	public String searchEmployDetails(String loginId) {
 		Map<String, Object> sessionMap = 
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
@@ -113,30 +113,33 @@ public class EmployDAOImpl implements EmployDAO {
 		}
 		return "";
 	}
-	
-	public static String generateEmployID() {
+
+	//Query query = session.createQuery("SELECT MAX(CAST(SUBSTRING(e.empId, 4) AS UNSIGNED)) FROM Employ e\r\n"
+	public String generateEmployID() {
 	    SessionFactory sf = SessionHelper.getConnection();
 	    Session session = sf.openSession();
 	    Query query = session.createQuery("SELECT MAX(e.empId) FROM Employ e");
-//	    Query query = session.createQuery("SELECT MAX(CAST(SUBSTRING(e.empId, 4) AS UNSIGNED)) FROM Employ e\r\n"
-//	    		+ "");
-	    String lastUHID = (String) query.uniqueResult();
-
+	    String lastEmpId = (String) query.uniqueResult();
 	    int numericPart;
-	    String newUHID = "";
-	    if (lastUHID == null) {
-	        lastUHID = "PCE0"; // Set an initial value if the table is empty
-	    }else {	
-	    	numericPart = Integer.parseInt(lastUHID.substring(3));
-	    	System.out.println(numericPart);
-	    	
-	    	numericPart++;
-	    	newUHID = String.format("PCE%01d", numericPart);
-	    	System.out.println(newUHID);
+	    String newEmpId = "";
+	    if (lastEmpId == null || lastEmpId.length() < 4) {
+	        // Set an initial value if the table is empty or lastEmpId is not in expected format
+	        numericPart = 0;
+	    } else {
+	        try {
+	            numericPart = Integer.parseInt(lastEmpId.substring(3));
+	        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+	            // Handle parsing error or string index out of bounds
+	            numericPart = 0;
+	        }
 	    }
+	    numericPart++;
+	    newEmpId = String.format("PCE%03d", numericPart); // Ensure numeric part is 3 digits
 	    session.close();
-	    return newUHID;
+	    return newEmpId;
 	}
+
+
 
 
 	@Override
@@ -145,10 +148,10 @@ public class EmployDAOImpl implements EmployDAO {
 				FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		String empId = generateEmployID();
 		employ.setEmpId(empId);
-		
+		System.out.println("LoginId"+empId);
 		upload(employ.getFile());
 		employ.setImgUrl(filePathNew);
-		
+
 		employ.setEmploymentStatus("Active");
 		String encr = EncryptPassword.getCode(empLogin.getPassword());
 		empLogin.setPassword(encr.trim());
@@ -184,7 +187,7 @@ public class EmployDAOImpl implements EmployDAO {
 		if (file != null) {
 			try (InputStream input = file.getInputStream()) {
 				String fileName = getSubmittedFileName(file);
-//				filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
+				//				filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
 				filePath = "C:/Users/ganeshmi/git/PlasticCompany/PlasticCompany/src/main/webapp/UploadedImages/" + fileName;
 				filePathNew = "UploadedImages/" +fileName;
 				try (OutputStream output = new FileOutputStream(new File(filePath))) {
@@ -218,7 +221,7 @@ public class EmployDAOImpl implements EmployDAO {
 
 	@Override
 	public String empLoginPage(EmpLogin login) {
-		
+
 
 		SessionFactory sf = SessionHelper.getConnection();
 		Session session = sf.openSession();
@@ -239,7 +242,7 @@ public class EmployDAOImpl implements EmployDAO {
 			return "EmployDetails.jsp?faces-redirect=true";
 		}
 	} 
-	
+
 	public static String generateOtp(int length) {
 		String characters = "0123456789";
 		SecureRandom secureRandom = new SecureRandom();
@@ -288,7 +291,7 @@ public class EmployDAOImpl implements EmployDAO {
 		EmpLogin EmpLogDataDb = searchadmin(login.getUsername());
 		sessionMap.put("EmpDbData", EmpLogDataDb);
 		EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
-		
+
 		System.out.println("Employ data by search meth():  "+EmpLogDataDb);
 		if (EmpLogDataDb.getUsername() != null) {
 			// Retrieve PID from the patient object
@@ -303,47 +306,47 @@ public class EmployDAOImpl implements EmployDAO {
 				System.out.println("Hitted ");
 				System.out.println("EmpLog Deatils from Session Map logDetails12 :"+logDetails12);
 				Employ logDetails1 = (Employ) sessionMap.get("EmployData");
-//				AppMail.sendEmail(logDetails1,logDetails12);
+				//				AppMail.sendEmail(logDetails1,logDetails12);
 				return "EmployVerification.jsp?faces-redirect=true";
 			}else {
 				return searchEmployDetails(EmpLogDataDb.getLoginId());
-//				return "ShowEmpProfile.jsp?faces-redirect=true";
+				//				return "ShowEmpProfile.jsp?faces-redirect=true";
 			}
 		}
 		return "";
 	}	
-	
 
-	
+
+
 	public String validateResetOtp() {
-	    String enteredOtp = enteredOtp1 + enteredOtp2 + enteredOtp3 + enteredOtp4;
-	    SessionFactory sf = SessionHelper.getConnection();
-	    Session session = sf.openSession();
-	    Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-	    EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
+		String enteredOtp = enteredOtp1 + enteredOtp2 + enteredOtp3 + enteredOtp4;
+		SessionFactory sf = SessionHelper.getConnection();
+		Session session = sf.openSession();
+		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
 		Employ logDetails1 = (Employ) sessionMap.get("EmployData");
 
-	    System.out.println("login Details came from empLogin meth():" + logDetails12);
-	    String otpFromDb = getLatestOtpForUser(session);
+		System.out.println("login Details came from empLogin meth():" + logDetails12);
+		String otpFromDb = getLatestOtpForUser(session);
 
-	    EmpLogin employlog = searchadmin(logDetails12.getUsername());
+		EmpLogin employlog = searchadmin(logDetails12.getUsername());
 
-	    if (enteredOtp.equals(otpFromDb)) {
-	        employlog.setOtpVerifyStatus("Verified");
-	        System.out.println("Validate " + employlog);
-	        Transaction trans2 = session.beginTransaction();
-	        session.evict(employlog); // Evicting the object from the session
-	        session.merge(employlog);
-	        System.out.println("After save " + employlog);
-	        trans2.commit();
-	        System.out.println("Successfully checked...");
-//	        AppMail.sendSuccessEmail(logDetails1,logDetails12,logDetails1.getEmail());
-	        return "ShowEmpProfile.jsp?faces-redirect=true";
-	    } else {
-	        System.out.println("Incorrect Otp Try again");
-	        FacesContext.getCurrentInstance().addMessage("form:digit1",
-	                new FacesMessage("Invalid Otp, Please Try again"));
-	        return "invalid otp";
-	    }
+		if (enteredOtp.equals(otpFromDb)) {
+			employlog.setOtpVerifyStatus("Verified");
+			System.out.println("Validate " + employlog);
+			Transaction trans2 = session.beginTransaction();
+			session.evict(employlog); // Evicting the object from the session
+			session.merge(employlog);
+			System.out.println("After save " + employlog);
+			trans2.commit();
+			System.out.println("Successfully checked...");
+			//	        AppMail.sendSuccessEmail(logDetails1,logDetails12,logDetails1.getEmail());
+			return "ShowEmpProfile.jsp?faces-redirect=true";
+		} else {
+			System.out.println("Incorrect Otp Try again");
+			FacesContext.getCurrentInstance().addMessage("form:digit1",
+					new FacesMessage("Invalid Otp, Please Try again"));
+			return "invalid otp";
+		}
 	}
 }	
