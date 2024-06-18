@@ -24,11 +24,10 @@ $(function() {
 </script>
 <link rel="stylesheet" href="Css\EmployDetails.css" />
 <style type="text/css">
-	body{
+body {
 	background-image: url('images/employeback.jpg');
 	background-size: auto;
-	
-	}
+}
 </style>
 </head>
 <body>
@@ -63,14 +62,14 @@ $(function() {
 				<br />
 
 				<label for="dateOfBirth">Date of Birth</label>
-                <h:inputText id="dateOfBirth" value="#{employe.dateOfBirth}"
-                    styleClass="dateOfBirth " autocomplete="off">
-                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                </h:inputText>
-                <span class="message"> <h:message for="dateOfBirth"
-                        style="display: block; color: red;margin-top:0rem;" />
-                </span>
-                <br />
+				<h:inputText id="dateOfBirth" value="#{employe.dateOfBirth}"
+					styleClass="dateOfBirth " autocomplete="off">
+					<f:convertDateTime pattern="MM/dd/yyyy" />
+				</h:inputText>
+				<span class="message"> <h:message for="dateOfBirth"
+						style="display: block; color: red;margin-top:0rem;" />
+				</span>
+				<br />
 
 				<h:outputLabel for="username">UserName</h:outputLabel>
 				<h:inputText id="username" value="#{emplogin.username}" />
@@ -91,7 +90,6 @@ $(function() {
 				<span id="cfm-match-message" style="color: red;"></span>
 				<span id="cfm-password-strength-message" style="color: black;"></span>
 				<br />
-
 
 				<h:outputLabel for="email">Email</h:outputLabel>
 				<h:inputText id="email" value="#{employe.email}" />
@@ -119,8 +117,8 @@ $(function() {
 				<span class="message"> <h:message for="image"
 						style="display: block; color: red; margin-top: 0rem;" />
 				</span>
-		 		<br />
-	
+				<br />
+
 				<h:commandButton value="Submit"
 					action="#{employeController.addValidConditions(employe,emplogin)}"
 					styleClass="ui-input-btn ui-btn ui-mini ui-btn-inline 

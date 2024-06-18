@@ -17,14 +17,4 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>ServletImageLoader</display-name>
-    <servlet-name>ServletImageLoader</servlet-name>
-    <servlet-class>com.java.employ.ServletImageLoader</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ServletImageLoader</servlet-name>
-    <url-pattern>/ServletImageLoader</url-pattern>
-  </servlet-mapping>
 </web-app>

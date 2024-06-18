@@ -45,6 +45,7 @@ body {
 				<h:inputSecret id="password" value="#{emplogin.password}" />
 				<span class="message"><h:message for="password" /></span>
 			</div>
+			
 			<h:commandButton action="#{employeController.empLogin(emplogin)}"
 				value="Login" />
 		</h:form>

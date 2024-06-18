@@ -10,7 +10,14 @@ public class EmpLogin {
 	private Date lastLoginTime;
 	private String otp;
 	private String otpVerifyStatus;
+	private String logoutTime;
 	
+	public String getLogoutTime() {
+		return logoutTime;
+	}
+	public void setLogoutTime(String logoutTime) {
+		this.logoutTime = logoutTime;
+	}
 	public String getLoginId() {
 		return loginId;
 	}

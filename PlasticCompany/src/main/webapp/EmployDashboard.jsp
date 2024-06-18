@@ -13,19 +13,18 @@
 <body style="background-color: #C8BEF3">
 	<form enctype="multipart/form-data">
 		<div class="container">
-			<aside class="sidebar">
-				<h2 id="menuHeader">Menu</h2>
-				<ul id="menuLinks" style="display: none;">
-					<li><a href="#">Dashboard</a></li>
-					<li><a href="#">Profile</a></li>
-					<li><a href="#">Tasks</a></li>
-					<li><a href="#">Notifications</a></li>
-					<!-- Add more menu items as needed -->
-				</ul>
-			</aside>
-		</div>
-
 			<main class="main-content">
+				<aside class="sidebar">
+					<h2 id="menuHeader">Menu</h2>
+					<ul id="menuLinks" style="display: none;">
+						<li><a href="#">Dashboard</a></li>
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Tasks</a></li>
+						<li><a href="#">Notifications</a></li>
+						<li><a href="EmpLogin.jsf">Logout</a> </li>
+						
+					</ul>
+				</aside>
 
 				<div>
 					<h:panelGroup layout="block" style="float: left;">
@@ -90,7 +89,7 @@
 					</ul>
 				</div>
 			</main>
-
+		</div>
 	</form>
 	<script src="JavaScript\DashBoard.js"></script>
 </body>

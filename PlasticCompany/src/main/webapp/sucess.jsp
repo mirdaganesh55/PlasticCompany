@@ -8,7 +8,7 @@
 <meta charset="ISO-8859-1">
 <title>Success</title>
 </head>
-<body>
+<body>																												
 	<f:view>
 		<h:form>
 			<h1 style="color: green;" align="center">Login Sucessfull!!!</h1>

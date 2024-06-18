@@ -20,7 +20,7 @@ create table empLogin(
 	loginId varchar(20) primary key,
 	username varchar(100),
     password varchar(100),
-	lastLoginTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	LoginTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     foreign key (loginId) references Employ(empId)
 );
 

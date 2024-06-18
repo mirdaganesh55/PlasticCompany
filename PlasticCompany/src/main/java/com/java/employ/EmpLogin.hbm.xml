@@ -13,7 +13,7 @@
             <column name="password"/>
         </property>
           <property generated="never" lazy="false" name="lastLoginTime" optimistic-lock="true" type="timestamp">
-            <column name="lastLoginTime"/>
+            <column name="LoginTime"/>
         </property>
          <property generated="never" lazy="false" name="otp" optimistic-lock="true" type="java.lang.String" unique="false">
             <column name="otp"/>
