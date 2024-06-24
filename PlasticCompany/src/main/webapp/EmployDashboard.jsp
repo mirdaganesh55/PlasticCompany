@@ -9,8 +9,38 @@
 <meta charset="UTF-8">
 <title>Employee Dashboard</title>
 <link rel="stylesheet" href="Css/Employdashboard.css">
+ <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var cookieExists = checkCookie('loginCookie');
+    if (cookieExists) {
+        console.log('Cookie exists and session value is available!');
+    } else {
+        window.location.href = "EmpLogin.jsf";
+        console.log('Cookie does not exist or session value is not available!');
+    }
+    function checkCookie(cookieName) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith(cookieName + '=')) {
+                var cookieValue = cookie.substring(cookieName.length + 1);
+                var cookieExpiration = new Date(cookieValue);
+                if (cookieExpiration && cookieExpiration < new Date()) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+ 
+});
+</script> 
 </head>
 <body style="background-color: #C8BEF3">
+<%-- <h:panelGroup rendered="#{employeDao.isLogged}"> --%>
 	<form enctype="multipart/form-data">
 		<div class="container">
 			<main class="main-content">
@@ -22,10 +52,8 @@
 						<li><a href="#">Tasks</a></li>
 						<li><a href="#">Notifications</a></li>
 						<li><a href="EmpLogin.jsf">Logout</a> </li>
-						
 					</ul>
 				</aside>
-
 				<div>
 					<h:panelGroup layout="block" style="float: left;">
 						<h2>
@@ -53,22 +81,17 @@
 								<strong>Phone:</strong>
 								<h:outputText value="#{EmployList.phoneNumber}" />
 							</p>
-							<!-- Add more details as needed -->
 						</div>
 					</div>
-
 				</div>
 				<br />
-
 				<div class="profile"></div>
-
 				<div class="tasks">
 					<h2>Tasks</h2>
 					<ul>
-						<li>Task 1</li>
-						<li>Task 2</li>
-						<li>Task 3</li>
-						<!-- Add dynamic tasks here using JSF tags -->
+						<li>You have to fight for election again in 2024!!!</li>
+						<li>Rally starts from J&K, continues till Kanyakumari.</li>
+						<li>Results be announced after 100years.</li>
 					</ul>
 				</div>
 				<div class="notifications">
@@ -92,6 +115,7 @@
 		</div>
 	</form>
 	<script src="JavaScript\DashBoard.js"></script>
+<%-- 	</h:panelGroup> --%>
 </body>
 	</html>
 </f:view>

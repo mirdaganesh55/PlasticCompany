@@ -31,7 +31,7 @@ h1 {
 }
 .profile-info {
 	background-color: #f9f9f9;
-	padding: 20px;
+	padding: auto;
 	border-radius: 10px;
 }
 .profile-image {

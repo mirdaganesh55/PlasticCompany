@@ -10,13 +10,13 @@ public class EmpLogin {
 	private Date lastLoginTime;
 	private String otp;
 	private String otpVerifyStatus;
-	private String logoutTime;
+	private Date logoutTime;
 	
-	public String getLogoutTime() {
+	public Date getLogoutTime() {
 		return logoutTime;
 	}
-	public void setLogoutTime(String logoutTime) {
-		this.logoutTime = logoutTime;
+	public void setLogoutTime(Date date) {
+		this.logoutTime = date;
 	}
 	public String getLoginId() {
 		return loginId;

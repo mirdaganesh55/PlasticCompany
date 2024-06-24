@@ -1,18 +1,19 @@
 package com.java.employ;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.hibernate.Criteria;
@@ -114,29 +115,27 @@ public class EmployDAOImpl implements EmployDAO {
 		}
 		return "";
 	}
-	//Query query = session.createQuery("SELECT MAX(CAST(SUBSTRING(e.empId, 4) AS UNSIGNED)) FROM Employ e\r\n"
+
 	public String generateEmployID() {
-	    SessionFactory sf = SessionHelper.getConnection();
-	    Session session = sf.openSession();
-	    Query query = session.createQuery("SELECT MAX(e.empId) FROM Employ e");
-	    String lastEmpId = (String) query.uniqueResult();
-	    int numericPart;
-	    String newEmpId = "";
-	    if (lastEmpId == null || lastEmpId.length() < 4) {
-	        // Set an initial value if the table is empty or lastEmpId is not in expected format
-	        numericPart = 0;
-	    } else {
-	        try {
-	            numericPart = Integer.parseInt(lastEmpId.substring(3));
-	        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-	            // Handle parsing error or string index out of bounds
-	            numericPart = 0;
-	        }
-	    }
-	    numericPart++;
-	    newEmpId = String.format("PCE%03d", numericPart); // Ensure numeric part is 3 digits
-	    session.close();
-	    return newEmpId;
+		SessionFactory sf = SessionHelper.getConnection();
+		Session session = sf.openSession();
+		Query query = session.createQuery("SELECT MAX(e.empId) FROM Employ e");
+		String lastEmpId = (String) query.uniqueResult();
+		int numericPart;
+		String newEmpId = "";
+		if (lastEmpId == null || lastEmpId.length() < 4) {
+			numericPart = 0;
+		} else {
+			try {
+				numericPart = Integer.parseInt(lastEmpId.substring(3));
+			} catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+				numericPart = 0;
+			}
+		}
+		numericPart++;
+		newEmpId = String.format("PCE%03d", numericPart); // Ensure numeric part is 3 digits
+		session.close();
+		return newEmpId;
 	}
 
 	@Override
@@ -184,7 +183,7 @@ public class EmployDAOImpl implements EmployDAO {
 		if (file != null) {
 			try (InputStream input = file.getInputStream()) {
 				String fileName = getSubmittedFileName(file);
-				//				filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
+				//filePath = "D:/EmploySaveImage/SaveImage/" + fileName;
 				filePath = "C:/Users/ganeshmi/git/PlasticCompany/PlasticCompany/src/main/webapp/UploadedImages/" + fileName;
 				filePathNew = "UploadedImages/" +fileName;
 				try (OutputStream output = new FileOutputStream(new File(filePath))) {
@@ -225,20 +224,29 @@ public class EmployDAOImpl implements EmployDAO {
 		cr.add(Restrictions.eq("username", login.getUsername()));
 		cr.add(Restrictions.eq("password", EncryptPassword.getCode(login.getPassword())));
 
-		//		cr.add(Restrictions.eq("otp",login.getOtp()));
 		cr.setProjection(Projections.rowCount());
-		long count = (long) cr.uniqueResult();
+		long count = (long) cr.setProjection(Projections.rowCount()).uniqueResult();
 		System.out.println("Count "+count);
 		if (count == 1 ) {
 			System.out.println("Inside if Block : " +count);
 			System.out.println("Login Object Data from empLogin : "+login);
 			System.out.println("From Login "+login);
+			addCookie("loginCookie",login.getUsername(), 120);
 			return getUserVerifiedStatus(session,login);
 		} else {
 			return "EmployDetails.jsp?faces-redirect=true";
 		}
 	} 
-
+	
+	public void addCookie(String name, String value, int maxAge) {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+        String encodedValue = Base64.getEncoder().encodeToString(value.getBytes());
+        Cookie cookie = new Cookie(name, encodedValue);
+        cookie.setMaxAge(maxAge);
+        response.addCookie(cookie);
+    }
+	
 	public static String generateOtp(int length) {
 		String characters = "0123456789";
 		SecureRandom secureRandom = new SecureRandom();
@@ -267,9 +275,7 @@ public class EmployDAOImpl implements EmployDAO {
 			Criteria criteria = session.createCriteria(EmpLogin.class);
 			criteria.add(Restrictions.eq("username", username));
 			criteria.setMaxResults(1);
-
 			EmpLogin otp = (EmpLogin)criteria.uniqueResult();
-
 			if (otp != null) {
 				return otp.getOtp();
 			} else {
@@ -282,12 +288,11 @@ public class EmployDAOImpl implements EmployDAO {
 		}
 	}	
 	private String getUserVerifiedStatus(Session session,EmpLogin login) {
-		// Get the patient object from the session map
 		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		EmpLogin EmpLogDataDb = searchadmin(login.getUsername());
 		sessionMap.put("EmpDbData", EmpLogDataDb);
 		EmpLogin logDetails12 = (EmpLogin) sessionMap.get("EmpDbData");
- 		System.out.println("Employ data by search meth():  "+EmpLogDataDb);
+		System.out.println("Employ data by search meth():  "+EmpLogDataDb);
 		if (EmpLogDataDb.getUsername() != null) {
 			// Retrieve PCE from the patient object
 			String userVerify = EmpLogDataDb.getOtpVerifyStatus();
@@ -304,15 +309,6 @@ public class EmployDAOImpl implements EmployDAO {
 //				AppMail.sendEmail(logDetails1,logDetails12);
 				return "EmployVerification.jsp?faces-redirect=true";
 			}else {
-//				EmpLogDataDb.setLastLoginTime(new Date());
-//				SessionFactory sf = SessionHelper.getConnection();
-//				Session session2 = sf.openSession();
-//				Transaction trans1 = session2.beginTransaction();
-//				session2.evict(EmpLogDataDb); // Evicting the object from the session
-//				session2.merge(EmpLogDataDb);
-//				trans1.commit();
-//				System.out.println("Login "+EmpLogDataDb);
-//				session2.close();
 				return searchEmployDetails(EmpLogDataDb.getLoginId());
 			}
 		}
@@ -349,14 +345,4 @@ public class EmployDAOImpl implements EmployDAO {
 			return "invalid otp";
 		}
 	}
-	 public void logout() throws IOException{
-		 System.out.println("Logout method...........");
-		 FacesContext facesContext = FacesContext.getCurrentInstance();
-		    ExternalContext externalContext = facesContext.getExternalContext();
-		    HttpSession session = (HttpSession) externalContext.getSession(false);
-		    if (session != null) {
-		        session.invalidate();
-		    }
-		    externalContext.redirect(externalContext.getRequestContextPath() + "/EmpLogin.jsp");
-	 }
 }	

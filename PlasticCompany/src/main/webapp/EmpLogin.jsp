@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <!DOCTYPE html>
@@ -22,9 +21,11 @@ body {
 	font-family: Arial, sans-serif;
 	color: #fff; /* Text color */
 }
+
 .container {
 	text-align: center;
 }
+
 .input-group {
 	margin-bottom: 20px;
 }
@@ -34,6 +35,7 @@ body {
 	<div class="container">
 		<h1>Login Here</h1>
 		<h:form id="form">
+
 			<div class="input-group">
 				<h:outputLabel for="username">Username:</h:outputLabel>
 				<h:inputText id="username" value="#{emplogin.username}" />
